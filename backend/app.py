@@ -30,6 +30,7 @@ def predict():
         mathematics = data.get('mathematics')
         physics = data.get('physics')
         chemistry = data.get('chemistry')
+        optional_subject = data.get('optional_subject', data.get('subject4', 0))
         community = data.get('community')
         stream = data.get('stream')
         
@@ -45,13 +46,14 @@ def predict():
             mathematics = float(mathematics)
             physics = float(physics)
             chemistry = float(chemistry)
+            optional_subject = float(optional_subject or 0)
         except ValueError:
             return jsonify({
                 'success': False,
                 'error': 'Marks must be valid numbers'
             }), 400
         
-        if not (0 <= mathematics <= 100 and 0 <= physics <= 100 and 0 <= chemistry <= 100):
+        if not all(0 <= mark <= 100 for mark in [mathematics, physics, chemistry, optional_subject]):
             return jsonify({
                 'success': False,
                 'error': 'Marks must be between 0 and 100'
@@ -66,7 +68,7 @@ def predict():
             }), 400
         
         # Validate stream
-        valid_streams = ['ENGINEERING', 'SCIENCE', 'ARTS']
+        valid_streams = ['ENGINEERING', 'SCIENCE', 'ARTS', 'COMMERCE']
         if stream not in valid_streams:
             return jsonify({
                 'success': False,
@@ -74,7 +76,7 @@ def predict():
             }), 400
         
         # Calculate cutoff score
-        cutoff_score = predictor.calculate_cutoff(mathematics, physics, chemistry, stream)
+        cutoff_score = predictor.calculate_cutoff(mathematics, physics, chemistry, stream, optional_subject)
         
         # Get matched colleges
         results = predictor.match_colleges(
@@ -99,6 +101,7 @@ def predict():
                 'mathematics': mathematics,
                 'physics': physics,
                 'chemistry': chemistry,
+                'optional_subject': optional_subject,
                 'community': community,
                 'stream': stream
             },

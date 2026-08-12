@@ -10,8 +10,9 @@ class CollegePredictor:
     def __init__(self):
         self.cutoff_multipliers = {
             "ENGINEERING": 1.0,
-            "SCIENCE": 0.9,
-            "ARTS": 0.8
+            "SCIENCE": 1.0,
+            "ARTS": 1.0,
+            "COMMERCE": 1.0
         }
         self.community_relaxations = {
             "OC": 0,
@@ -165,21 +166,26 @@ class CollegePredictor:
             }
         ]
     
-    def calculate_cutoff(self, mathematics: float, physics: float, chemistry: float, stream: str = 'ENGINEERING') -> float:
+    def calculate_cutoff(
+        self,
+        mathematics: float,
+        physics: float,
+        chemistry: float,
+        stream: str = 'ENGINEERING',
+        optional_subject: float = 0,
+    ) -> float:
         """
-        Calculate normalized cutoff score based on marks and stream.
+        Calculate admission score based on Tamil Nadu +2 major subject pattern.
 
-        For Engineering: (Maths + Physics + Chemistry) * 0.667
-        For Science: (Maths * 0.4 + Physics * 0.3 + Chemistry * 0.3) * 2
-        For Arts: (Maths * 0.3 + Physics * 0.3 + Chemistry * 0.4) * 2
+        Engineering: Maths + (Physics / 2) + (Chemistry / 2) = cutoff out of 200.
+        Science / Arts: Physics + Chemistry + Maths/Biology + Optional = score out of 400.
+        Commerce: Accountancy + Commerce + Economics + Business Maths/CS/Auditing = score out of 400.
         """
         stream = (stream or 'ENGINEERING').upper()
-        if stream == 'SCIENCE':
-            cutoff = (mathematics * 0.4 + physics * 0.3 + chemistry * 0.3) * 2
-        elif stream == 'ARTS':
-            cutoff = (mathematics * 0.3 + physics * 0.3 + chemistry * 0.4) * 2
+        if stream == 'ENGINEERING':
+            cutoff = mathematics + (physics / 2) + (chemistry / 2)
         else:
-            cutoff = (mathematics + physics + chemistry) * 0.667
+            cutoff = mathematics + physics + chemistry + optional_subject
 
         return round(cutoff, 2)
     
@@ -251,7 +257,10 @@ class CollegePredictor:
                 'ranking': college.get('ranking', 'Not Ranked'),
                 'placement_percentage': college.get('placement_percentage', 0),
                 'average_package': college.get('average_package', 0),
-                'highest_package': college.get('highest_package', 0)
+                'highest_package': college.get('highest_package', 0),
+                'counselling_code': college.get('counselling_code', 'N/A'),
+                'apply_link': college.get('apply_link', '#'),
+                'admission_mode': college.get('admission_mode', 'Counselling / institution admission')
             }
             
             # Categorize based on difference
@@ -362,9 +371,9 @@ class ChatbotAssistant:
         📊 **Understanding Cutoffs in Tamil Nadu:**
         
         🎯 **Cutoff Score Calculation:**
-        • Engineering: (Maths + Physics + Chemistry) × 0.667
-        • Science: (Maths × 0.4 + Physics × 0.3 + Chemistry × 0.3) × 2
-        • Arts: (Maths × 0.3 + Physics × 0.3 + Chemistry × 0.4) × 2
+        • Engineering: Maths + (Physics ÷ 2) + (Chemistry ÷ 2) = cutoff out of 200
+        • Science / Arts: Physics + Chemistry + Maths/Biology + Optional = score out of 400
+        • Commerce: Accountancy + Commerce + Economics + Business Maths/CS/Auditing = score out of 400
         
         🏷️ **Community Relaxations:**
         • OC: No relaxation

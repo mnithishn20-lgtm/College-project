@@ -1,7 +1,33 @@
 // =====================================================================
 // API Configuration
 // =====================================================================
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = window.location.origin.includes('5000') ? window.location.origin : 'http://localhost:5000';
+
+const STREAM_SUBJECTS = {
+    ENGINEERING: ['Mathematics (0-100)', 'Physics (0-100)', 'Chemistry (0-100)', 'Optional Subject (not used)'],
+    SCIENCE: ['Physics (0-100)', 'Chemistry (0-100)', 'Mathematics / Biology (0-100)', 'Computer Science / Optional (0-100)'],
+    ARTS: ['Physics / Major 1 (0-100)', 'Chemistry / Major 2 (0-100)', 'Mathematics / Biology (0-100)', 'Computer Science / Optional (0-100)'],
+    COMMERCE: ['Accountancy (0-100)', 'Commerce (0-100)', 'Economics (0-100)', 'Business Maths / CS / Auditing (0-100)']
+};
+
+function updateSubjectLabels() {
+    const stream = document.getElementById('stream').value || 'ENGINEERING';
+    const labels = STREAM_SUBJECTS[stream] || STREAM_SUBJECTS.ENGINEERING;
+    document.getElementById('subject1Label').textContent = labels[0];
+    document.getElementById('subject2Label').textContent = labels[1];
+    document.getElementById('subject3Label').textContent = labels[2];
+    document.getElementById('subject4Label').textContent = labels[3];
+
+    const optionalInput = document.getElementById('optionalSubject');
+    const optionalGroup = document.getElementById('optionalSubjectGroup');
+    const isEngineering = stream === 'ENGINEERING';
+    optionalInput.required = !isEngineering;
+    optionalInput.value = isEngineering ? '' : optionalInput.value;
+    optionalGroup.classList.toggle('is-muted', isEngineering);
+}
+
+document.getElementById('stream').addEventListener('change', updateSubjectLabels);
+document.addEventListener('DOMContentLoaded', updateSubjectLabels);
 
 // =====================================================================
 // FORM SUBMISSION & PREDICTION
@@ -12,11 +38,12 @@ document.getElementById('predictorForm').addEventListener('submit', async functi
     const mathematics = document.getElementById('mathematics').value;
     const physics = document.getElementById('physics').value;
     const chemistry = document.getElementById('chemistry').value;
+    const optionalSubject = document.getElementById('optionalSubject').value || 0;
     const community = document.getElementById('community').value;
     const stream = document.getElementById('stream').value;
     
     // Validate inputs
-    if (!mathematics || !physics || !chemistry || !community || !stream) {
+    if (!mathematics || !physics || !chemistry || (!optionalSubject && stream !== 'ENGINEERING') || !community || !stream) {
         alert('Please fill in all fields');
         return;
     }
@@ -36,6 +63,7 @@ document.getElementById('predictorForm').addEventListener('submit', async functi
                 mathematics: parseFloat(mathematics),
                 physics: parseFloat(physics),
                 chemistry: parseFloat(chemistry),
+                optional_subject: parseFloat(optionalSubject || 0),
                 community,
                 stream
             })
@@ -97,7 +125,9 @@ function displayCollegeList(category, colleges, containerId, categoryId) {
             <div class="college-info">
                 <span><i class="fas fa-book"></i> ${college.branch_name}</span><br>
                 <span><i class="fas fa-map-marker-alt"></i> ${college.district || 'N/A'}</span><br>
-                <span><i class="fas fa-chair"></i> ${college.available_seats || 0} Seats Available</span>
+                <span><i class="fas fa-chair"></i> ${college.available_seats || 0} Seats Available</span><br>
+                <span><i class="fas fa-hashtag"></i> Counselling Code: <strong>${college.counselling_code || 'N/A'}</strong></span><br>
+                <span><i class="fas fa-building-columns"></i> ${college.admission_mode || 'Counselling / institution admission'}</span>
             </div>
             <div>
                 <small style="color: #666;">
@@ -110,6 +140,7 @@ function displayCollegeList(category, colleges, containerId, categoryId) {
             </div>
             <div style="margin-top: 10px;">
                 <span class="badge badge-${category.toLowerCase()}">${college.probability || category}</span>
+                <a class="apply-link" href="${college.apply_link || '#'}" target="_blank" rel="noopener noreferrer">Apply / Counselling <i class="fas fa-arrow-up-right-from-square"></i></a>
             </div>
         </div>
     `).join('');

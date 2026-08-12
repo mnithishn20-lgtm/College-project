@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UG College Admission Predictor & Chatbot</title>
-    
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome Icons -->
@@ -20,7 +20,7 @@
             <p>+2 Students: Find your perfect college match & get counselling guidance instantly</p>
         </div>
     </div>
-    
+
     <!-- Main Container -->
     <div class="container container-main">
         <div class="row">
@@ -33,23 +33,28 @@
                     <div class="card-body">
                         <form id="predictorForm">
                             <div class="row">
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Mathematics (0-100)</label>
-                                    <input type="number" class="form-control" id="mathematics" 
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label" id="subject1Label">Mathematics (0-100)</label>
+                                    <input type="number" class="form-control" id="mathematics"
                                            min="0" max="100" step="0.5" required placeholder="Enter marks">
                                 </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Physics (0-100)</label>
-                                    <input type="number" class="form-control" id="physics" 
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label" id="subject2Label">Physics (0-100)</label>
+                                    <input type="number" class="form-control" id="physics"
                                            min="0" max="100" step="0.5" required placeholder="Enter marks">
                                 </div>
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Chemistry (0-100)</label>
-                                    <input type="number" class="form-control" id="chemistry" 
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label" id="subject3Label">Chemistry (0-100)</label>
+                                    <input type="number" class="form-control" id="chemistry"
                                            min="0" max="100" step="0.5" required placeholder="Enter marks">
+                                </div>
+                                <div class="col-md-3 mb-3" id="optionalSubjectGroup">
+                                    <label class="form-label" id="subject4Label">Optional Subject (0-100)</label>
+                                    <input type="number" class="form-control" id="optionalSubject"
+                                           min="0" max="100" step="0.5" placeholder="Enter marks">
                                 </div>
                             </div>
-                            
+
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Reservation Category</label>
@@ -67,56 +72,57 @@
                                     <select class="form-select" id="stream" required>
                                         <option value="">Select Stream</option>
                                         <option value="ENGINEERING">Engineering</option>
-                                        <option value="ARTS">Arts</option>
                                         <option value="SCIENCE">Science</option>
+                                        <option value="COMMERCE">Commerce</option>
+                                        <option value="ARTS">Arts</option>
                                     </select>
                                 </div>
                             </div>
-                            
+
                             <button type="submit" class="btn btn-predict">
                                 <i class="fas fa-search"></i> Predict My Colleges
                             </button>
                         </form>
                     </div>
                 </div>
-                
+
                 <!-- Results Section -->
                 <div class="results-container" id="resultsContainer">
                     <div id="loadingIndicator" class="loading" style="display:none;">
                         <div class="spinner"></div>
                         <p>Analyzing your profile...</p>
                     </div>
-                    
+
                     <div id="resultsContent" style="display:none;">
                         <div class="cutoff-badge">
                             <h4 id="cutoffScore">0.00</h4>
                             <p>Your Normalized Cutoff Score</p>
                         </div>
-                        
+
                         <!-- Safe Colleges -->
                         <div class="college-category" id="safeCategory">
-                            <h5><i class="fas fa-check-circle"></i> Safe Options 
+                            <h5><i class="fas fa-check-circle"></i> Safe Options
                                 <span class="badge badge-safe">High Chance</span>
                             </h5>
                             <div id="safeColleges"></div>
                         </div>
-                        
+
                         <!-- Borderline Colleges -->
                         <div class="college-category" id="borderlineCategory">
-                            <h5><i class="fas fa-exclamation-circle"></i> Borderline Options 
+                            <h5><i class="fas fa-exclamation-circle"></i> Borderline Options
                                 <span class="badge badge-borderline">Moderate Chance</span>
                             </h5>
                             <div id="borderlineColleges"></div>
                         </div>
-                        
+
                         <!-- Dream Colleges -->
                         <div class="college-category" id="dreamCategory">
-                            <h5><i class="fas fa-star"></i> Dream Options 
+                            <h5><i class="fas fa-star"></i> Dream Options
                                 <span class="badge badge-dream">Low Chance</span>
                             </h5>
                             <div id="dreamColleges"></div>
                         </div>
-                        
+
                         <div id="noResults" class="no-results" style="display:none;">
                             <i class="fas fa-inbox"></i>
                             <p>No colleges found for your criteria. Try adjusting your marks or category selection.</p>
@@ -124,7 +130,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Right Column: Info Cards -->
             <div class="col-lg-4 mb-4">
                 <!-- How It Works Card -->
@@ -135,7 +141,7 @@
                     <div class="card-body" style="font-size: 13px;">
                         <div class="mb-3">
                             <strong>✅ Safe Options</strong>
-                            <p>Your score is 2+ points above historical cutoff. High admission chance!</p>
+                            <p>Your score is 2+ points above the historical stream cutoff. High admission chance!</p>
                         </div>
                         <div class="mb-3">
                             <strong>⚠️ Borderline Options</strong>
@@ -147,8 +153,19 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Preference Strategy Card -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5><i class="fas fa-list-check"></i> Score Formula</h5>
+                    </div>
+                    <div class="card-body formula-card">
+                        <p><strong>Engineering:</strong> Maths + (Physics ÷ 2) + (Chemistry ÷ 2)</p>
+                        <p><strong>Science / Arts:</strong> Physics + Chemistry + Maths/Biology + Optional = 400</p>
+                        <p><strong>Commerce:</strong> Accountancy + Commerce + Economics + Business Maths/CS/Auditing = 400</p>
+                    </div>
+                </div>
+
                 <div class="card">
                     <div class="card-header">
                         <h5><i class="fas fa-strategy"></i> Smart Preference Filling</h5>
@@ -168,12 +185,12 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Chatbot Toggle Button -->
     <button class="chat-toggle" id="chatToggle" onclick="toggleChatbot()">
         <i class="fas fa-comments"></i>
     </button>
-    
+
     <!-- Chatbot Container -->
     <div class="chatbot-container" id="chatbotContainer">
         <div class="chatbot-header">
@@ -185,7 +202,7 @@
         <div class="chat-messages" id="chatMessages">
             <div class="message bot-message">
                 <div class="message-content">
-                    👋 Hi! I'm your College Counselling Assistant. Ask me anything about admission cutoffs, college selection, or preference filling strategy! 
+                    👋 Hi! I'm your College Counselling Assistant. Ask me anything about admission cutoffs, college selection, or preference filling strategy!
                 </div>
             </div>
         </div>
@@ -196,7 +213,7 @@
             </button>
         </div>
     </div>
-    
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/app.js"></script>
