@@ -103,7 +103,8 @@ def predict():
                 'chemistry': chemistry,
                 'optional_subject': optional_subject,
                 'community': community,
-                'stream': stream
+                'stream': stream,
+                'score_max': 200 if stream == 'ENGINEERING' else 400
             },
             'statistics': {
                 'total_colleges_available': stats.get('total_colleges', 0)
