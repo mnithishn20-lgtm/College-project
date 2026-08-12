@@ -3,30 +3,14 @@
 // =====================================================================
 const API_BASE_URL = window.location.origin.includes('5000') ? window.location.origin : 'http://localhost:5000';
 
-const STREAM_SUBJECTS = {
-    ENGINEERING: ['Mathematics (0-100)', 'Physics (0-100)', 'Chemistry (0-100)', 'Optional Subject (not used)'],
-    SCIENCE: ['Physics (0-100)', 'Chemistry (0-100)', 'Mathematics / Biology (0-100)', 'Computer Science / Optional (0-100)'],
-    ARTS: ['Physics / Major 1 (0-100)', 'Chemistry / Major 2 (0-100)', 'Mathematics / Biology (0-100)', 'Computer Science / Optional (0-100)'],
-    COMMERCE: ['Accountancy (0-100)', 'Commerce (0-100)', 'Economics (0-100)', 'Business Maths / CS / Auditing (0-100)']
-};
+const ENGINEERING_SUBJECTS = ['Mathematics (0-100)', 'Physics (0-100)', 'Chemistry (0-100)'];
 
 function updateSubjectLabels() {
-    const stream = document.getElementById('stream').value || 'ENGINEERING';
-    const labels = STREAM_SUBJECTS[stream] || STREAM_SUBJECTS.ENGINEERING;
-    document.getElementById('subject1Label').textContent = labels[0];
-    document.getElementById('subject2Label').textContent = labels[1];
-    document.getElementById('subject3Label').textContent = labels[2];
-    document.getElementById('subject4Label').textContent = labels[3];
-
-    const optionalInput = document.getElementById('optionalSubject');
-    const optionalGroup = document.getElementById('optionalSubjectGroup');
-    const isEngineering = stream === 'ENGINEERING';
-    optionalInput.required = !isEngineering;
-    optionalInput.value = isEngineering ? '' : optionalInput.value;
-    optionalGroup.classList.toggle('is-muted', isEngineering);
+    document.getElementById('subject1Label').textContent = ENGINEERING_SUBJECTS[0];
+    document.getElementById('subject2Label').textContent = ENGINEERING_SUBJECTS[1];
+    document.getElementById('subject3Label').textContent = ENGINEERING_SUBJECTS[2];
 }
 
-document.getElementById('stream').addEventListener('change', updateSubjectLabels);
 document.addEventListener('DOMContentLoaded', updateSubjectLabels);
 
 // =====================================================================
@@ -38,12 +22,11 @@ document.getElementById('predictorForm').addEventListener('submit', async functi
     const mathematics = document.getElementById('mathematics').value;
     const physics = document.getElementById('physics').value;
     const chemistry = document.getElementById('chemistry').value;
-    const optionalSubject = document.getElementById('optionalSubject').value || 0;
     const community = document.getElementById('community').value;
-    const stream = document.getElementById('stream').value;
+    const stream = 'ENGINEERING';
     
     // Validate inputs
-    if (!mathematics || !physics || !chemistry || (!optionalSubject && stream !== 'ENGINEERING') || !community || !stream) {
+    if (!mathematics || !physics || !chemistry || !community) {
         alert('Please fill in all fields');
         return;
     }
@@ -63,7 +46,6 @@ document.getElementById('predictorForm').addEventListener('submit', async functi
                 mathematics: parseFloat(mathematics),
                 physics: parseFloat(physics),
                 chemistry: parseFloat(chemistry),
-                optional_subject: parseFloat(optionalSubject || 0),
                 community,
                 stream
             })
