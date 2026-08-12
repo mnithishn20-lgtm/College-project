@@ -100,3 +100,16 @@ body::before {
 .loading .spinner { width: 36px; height: 36px; border: 4px solid #dbeafe; border-top: 4px solid var(--primary); border-radius: 50%; margin: 0 auto 18px; animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @media (max-width: 576px) { .chatbot-container { width: calc(100vw - 24px); right: 12px; height: 70vh; } .apply-link { float: none; display: block; margin-top: 10px; } }
+.formula-highlight {
+    background: linear-gradient(135deg, #eff6ff, #ecfdf5);
+    border: 1px solid #bfdbfe;
+    border-radius: 12px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.4;
+    padding: 11px 13px;
+}
+
+.formula-highlight strong {
+    color: var(--primary);
+}

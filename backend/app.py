@@ -68,11 +68,11 @@ def predict():
             }), 400
         
         # Validate stream
-        valid_streams = ['ENGINEERING', 'SCIENCE', 'ARTS', 'COMMERCE']
-        if stream not in valid_streams:
+        valid_streams = ['ENGINEERING']
+        if stream != 'ENGINEERING':
             return jsonify({
                 'success': False,
-                'error': f'Invalid stream. Must be one of: {", ".join(valid_streams)}'
+                'error': 'Invalid stream. This predictor supports ENGINEERING only.'
             }), 400
         
         # Calculate cutoff score
@@ -434,7 +434,7 @@ if __name__ == '__main__':
     
     # Print startup message
     print(f"\n{'='*60}")
-    print(f"🏛️  Tamil Nadu College Admission Predictor & Chatbot")
+    print(f"🏛️  Tamil Nadu Engineering Admission Predictor & Chatbot")
     print(f"{'='*60}")
     print(f"📊 Server running on: http://localhost:{port}")
     print(f"📚 Health check: http://localhost:{port}/health")

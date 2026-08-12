@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UG College Admission Predictor & Chatbot</title>
+    <title>Tamil Nadu Engineering Admission Predictor & Chatbot</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -16,8 +16,8 @@
     <!-- Header -->
     <div class="header">
         <div class="container container-main">
-            <h1><i class="fas fa-graduation-cap"></i> College Admission Predictor</h1>
-            <p>+2 Students: Find your perfect college match & get counselling guidance instantly</p>
+            <h1><i class="fas fa-graduation-cap"></i> Engineering Admission Predictor</h1>
+            <p>+2 Students: Calculate your TNEA-style cutoff out of 200 and find Tamil Nadu engineering college matches instantly</p>
         </div>
     </div>
 
@@ -28,7 +28,7 @@
             <div class="col-lg-8 mb-4">
                 <div class="card">
                     <div class="card-header">
-                        <h5><i class="fas fa-calculator"></i> Your Admission Predictor</h5>
+                        <h5><i class="fas fa-calculator"></i> Engineering Cutoff Predictor</h5>
                     </div>
                     <div class="card-body">
                         <form id="predictorForm">
@@ -48,10 +48,11 @@
                                     <input type="number" class="form-control" id="chemistry"
                                            min="0" max="100" step="0.5" required placeholder="Enter marks">
                                 </div>
-                                <div class="col-md-3 mb-3" id="optionalSubjectGroup">
-                                    <label class="form-label" id="subject4Label">Optional Subject (0-100)</label>
-                                    <input type="number" class="form-control" id="optionalSubject"
-                                           min="0" max="100" step="0.5" placeholder="Enter marks">
+                                <div class="col-md-3 mb-3">
+                                    <div class="formula-highlight">
+                                        <strong>Out of 200</strong><br>
+                                        Maths + Physics/2 + Chemistry/2
+                                    </div>
                                 </div>
                             </div>
 
@@ -68,14 +69,9 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Stream</label>
-                                    <select class="form-select" id="stream" required>
-                                        <option value="">Select Stream</option>
-                                        <option value="ENGINEERING">Engineering</option>
-                                        <option value="SCIENCE">Science</option>
-                                        <option value="COMMERCE">Commerce</option>
-                                        <option value="ARTS">Arts</option>
-                                    </select>
+                                    <label class="form-label">Admission Type</label>
+                                    <input type="text" class="form-control" value="Tamil Nadu Engineering Colleges" disabled>
+                                    <input type="hidden" id="stream" value="ENGINEERING">
                                 </div>
                             </div>
 
@@ -96,7 +92,7 @@
                     <div id="resultsContent" style="display:none;">
                         <div class="cutoff-badge">
                             <h4 id="cutoffScore">0.00</h4>
-                            <p>Your Normalized Cutoff Score</p>
+                            <p>Your Engineering Cutoff Score (out of 200)</p>
                         </div>
 
                         <!-- Safe Colleges -->
@@ -125,7 +121,7 @@
 
                         <div id="noResults" class="no-results" style="display:none;">
                             <i class="fas fa-inbox"></i>
-                            <p>No colleges found for your criteria. Try adjusting your marks or category selection.</p>
+                            <p>No Tamil Nadu engineering colleges found for your criteria. Try adjusting your marks or category selection.</p>
                         </div>
                     </div>
                 </div>
@@ -141,7 +137,7 @@
                     <div class="card-body" style="font-size: 13px;">
                         <div class="mb-3">
                             <strong>✅ Safe Options</strong>
-                            <p>Your score is 2+ points above the historical stream cutoff. High admission chance!</p>
+                            <p>Your score is 2+ points above the historical engineering cutoff. High admission chance!</p>
                         </div>
                         <div class="mb-3">
                             <strong>⚠️ Borderline Options</strong>
@@ -160,9 +156,11 @@
                         <h5><i class="fas fa-list-check"></i> Score Formula</h5>
                     </div>
                     <div class="card-body formula-card">
-                        <p><strong>Engineering:</strong> Maths + (Physics ÷ 2) + (Chemistry ÷ 2)</p>
-                        <p><strong>Science / Arts:</strong> Physics + Chemistry + Maths/Biology + Optional = 400</p>
-                        <p><strong>Commerce:</strong> Accountancy + Commerce + Economics + Business Maths/CS/Auditing = 400</p>
+                        <p><strong>Mathematics:</strong> Actual score out of 100.</p>
+                        <p><strong>Physics:</strong> Score ÷ 2 (maximum 50).</p>
+                        <p><strong>Chemistry:</strong> Score ÷ 2 (maximum 50).</p>
+                        <p><strong>Total Engineering Cutoff:</strong> Maths + Physics/2 + Chemistry/2 = 200.</p>
+                        <p><strong>Example:</strong> 90 + (80 ÷ 2) + (70 ÷ 2) = <strong>165.00 / 200</strong>.</p>
                     </div>
                 </div>
 
