@@ -6,7 +6,7 @@ const API_BASE_URL = window.location.origin.includes('5000') ? window.location.o
 const STREAM_SUBJECTS = {
     ENGINEERING: ['Mathematics (0-100)', 'Physics (0-100)', 'Chemistry (0-100)', 'Optional Subject (not used)'],
     SCIENCE: ['Physics (0-100)', 'Chemistry (0-100)', 'Mathematics / Biology (0-100)', 'Computer Science / Optional (0-100)'],
-    ARTS: ['Physics / Major 1 (0-100)', 'Chemistry / Major 2 (0-100)', 'Mathematics / Biology (0-100)', 'Computer Science / Optional (0-100)'],
+    ARTS: ['Major Subject 1 (0-100)', 'Major Subject 2 (0-100)', 'Major Subject 3 (0-100)', 'Optional / Language Subject (0-100)'],
     COMMERCE: ['Accountancy (0-100)', 'Commerce (0-100)', 'Economics (0-100)', 'Business Maths / CS / Auditing (0-100)']
 };
 
@@ -92,8 +92,10 @@ function displayResults(data) {
     const cutoffScore = data.cutoff_score;
     const results = data.results;
     
-    // Update cutoff score
+    // Update cutoff score and formula label
     document.getElementById('cutoffScore').textContent = cutoffScore.toFixed(2);
+    const scoreMax = data.student_data.stream === 'ENGINEERING' ? 200 : 400;
+    document.getElementById('scoreFormatLabel').textContent = `Your calculated score out of ${scoreMax}`;
     
     // Display colleges
     displayCollegeList('Safe', results.safe, 'safeColleges', 'safeCategory');
